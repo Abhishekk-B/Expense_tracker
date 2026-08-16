@@ -3,6 +3,9 @@ from rest_framework.permissions import IsAuthenticated
 
 from .models import Expense
 from .serializers import ExpenseSerializer
+from rest_framework import filters
+from django_filters.rest_framework import DjangoFilterBackend
+from .filters import ExpenseFilter
 
 
 class ExpenseViewSet(viewsets.ModelViewSet):
@@ -10,6 +13,23 @@ class ExpenseViewSet(viewsets.ModelViewSet):
 
     serializer_class = ExpenseSerializer
     permission_classes = [IsAuthenticated]
+    search_fields = [
+        "title",
+        "notes",
+        ]
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.SearchFilter,
+        filters.OrderingFilter,
+    ]
+
+    filterset_class = ExpenseFilter
+    
+    ordering_fields = [
+        "amount",
+        "expense_date",
+        "created_at",
+    ]
 
     def get_queryset(self):
         return Expense.objects.filter(
