@@ -6,6 +6,7 @@ from .serializers import ExpenseSerializer
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
 from .filters import ExpenseFilter
+from rest_framework.parsers import MultiPartParser, FormParser
 
 
 class ExpenseViewSet(viewsets.ModelViewSet):
@@ -29,6 +30,10 @@ class ExpenseViewSet(viewsets.ModelViewSet):
         "amount",
         "expense_date",
         "created_at",
+    ]
+    parser_classes = [
+        MultiPartParser,
+        FormParser,
     ]
 
     def get_queryset(self):

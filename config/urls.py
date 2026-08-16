@@ -22,6 +22,8 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 from accounts.views import RegisterView
+from django.conf import settings
+from django.conf.urls.static import static
 
 def home(request):
     return JsonResponse({
@@ -36,13 +38,13 @@ urlpatterns = [
     path("api/register/", RegisterView.as_view()),
     path("api/expenses/", include("expenses.urls")),
     path("api/categories/", include("categories.urls")),
-    path(
-        "api/login/",
-        TokenObtainPairView.as_view()
-    ),
-
-    path(
-        "api/token/refresh/",
-        TokenRefreshView.as_view()
-    ),
+    path("api/", include("analytics.urls")),
+    path("api/login/", TokenObtainPairView.as_view()),
+    path("api/token/refresh/", TokenRefreshView.as_view()),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(
+        settings.MEDIA_URL,
+        document_root=settings.MEDIA_ROOT
+    )
