@@ -7,13 +7,15 @@ from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
 from .filters import ExpenseFilter
 from rest_framework.parsers import MultiPartParser, FormParser
+from .permissions import IsOwnerOrAdmin
+from rest_framework.permissions import IsAuthenticated
 
 
 class ExpenseViewSet(viewsets.ModelViewSet):
     queryset = Expense.objects.all()      # ← Add this line
 
     serializer_class = ExpenseSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsOwnerOrAdmin]
     search_fields = [
         "title",
         "notes",

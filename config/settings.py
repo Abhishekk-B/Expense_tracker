@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'expenses',
     'categories',
     'analytics',
-    'django_filters'
+    'django_filters',
+    'drf_spectacular'
 ]
 
 MIDDLEWARE = [
@@ -157,8 +158,33 @@ REST_FRAMEWORK = {
         "rest_framework.pagination.PageNumberPagination",
 
     "PAGE_SIZE": 5,
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 MEDIA_URL = "/media/"
 
 MEDIA_ROOT = BASE_DIR / "media"
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Expense Tracker API",
+    "DESCRIPTION": "Expense Management Backend",
+    "VERSION": "1.0.0",
+
+    "SERVE_INCLUDE_SCHEMA": False,
+
+    "SECURITY": [
+        {
+            "BearerAuth": []
+        }
+    ],
+
+    "COMPONENTS": {
+        "securitySchemes": {
+            "BearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT",
+            }
+        }
+    },
+}
